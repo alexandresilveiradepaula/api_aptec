@@ -203,7 +203,7 @@ public class User {
         addProfile(ProfileEnums.USER);
     }
 
-    public Set<ProfileEnums> getprofiles(){
+    public Set<ProfileEnums> getProfiles(){
         return this.profiles.stream()
             .map(x-> ProfileEnums.toEnum(x))
             .collect(Collectors.toSet());

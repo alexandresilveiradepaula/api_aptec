@@ -124,6 +124,8 @@ public class TaskService {
 }
     */
 
+
+
 public Task findById(Long id){
     Optional<Task> task = this.taskRepository.findById(id);
 
@@ -132,7 +134,7 @@ public Task findById(Long id){
 
         UserSpringSecurity userSpringSecurity = UserService.authenticated();
 
-        if(Object.isNull(userSpringSecurity) || !userSpringSecurity.hasRole(ProfileEnums.ADMIN) && !userHasTask(userSpringSecurity, t)){
+        if(Objects.isNull(userSpringSecurity) || !userSpringSecurity.hasRole(ProfileEnums.ADMIN) && !userHasTask(userSpringSecurity, t)){
             throw new AuthorizationException("Acesso Negado, Voc~e não possui permissão para acessar esta tarefa.");
         }
         return t;
@@ -141,7 +143,7 @@ public Task findById(Long id){
     public List<TaskProjection> findByLoggedUser(){
         UserSpringSecurity userSpringSecurity = UserService.authenticated();
 
-        if(Objects.isNull(userSpringSecurity){
+        if(Objects.isNull(userSpringSecurity)){
             throw new AuthorizationException("Acesso negado! Usuário não autenticado.");
         }
 
@@ -163,6 +165,17 @@ public Task findById(Long id){
 
         return this.taskRepository.save(obj);
     }
+
+    @Transactional(readOnly = true)
+public List<TaskProjection> findAllByLoggedUser() {
+    UserSpringSecurity userSS = UserService.authenticated();
+
+    if (Objects.isNull(userSS)) {
+        throw new AuthorizationException("Acesso negado! Usuário não autenticado.");
+    }
+
+    return this.taskRepository.findByUser_Id(userSS.getId());
+}
 
     @Transactional 
     public Task update (Task obj){

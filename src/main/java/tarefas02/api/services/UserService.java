@@ -11,6 +11,8 @@ import org.springframework.transaction.annotation.Transactional; // Gerencia o c
 
 import jakarta.validation.Valid;
 import tarefas02.api.models.User; // Modelo da entidade User
+import tarefas02.api.models.dtos.UserCreateDTO;
+import tarefas02.api.models.dtos.UserUpdateDTO;
 import tarefas02.api.models.enums.ProfileEnums; // Enumerador com os perfis de acesso (ADMIN, USER)
 import tarefas02.api.repositories.UserRepository; // Repositório JPA para a entidade User
 import tarefas02.api.security.UserSpringSecurity; // Objeto de detalhes do usuário autenticado no Spring Security
@@ -101,5 +103,19 @@ public class UserService {
         }
     }
 
- // paramos aqui
+ // Converte o DTO de criação (UserCreateDTO) em uma Entidade User
+    public User fromDTO(@Valid UserCreateDTO obj) {
+        User user = new User();
+        user.setUsername(obj.getUsername());
+        user.setPassword(obj.getPassword());
+        return user;
+    }
+
+    // Converte o DTO de atualização (UserUpdateDTO) em uma Entidade User
+    public User fromDTO(@Valid UserUpdateDTO obj) {
+        User user = new User();
+        user.setId(obj.getId());
+        user.setPassword(obj.getPassword());
+        return user;
+    }
 }
